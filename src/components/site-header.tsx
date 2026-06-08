@@ -1,14 +1,13 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 
 const nav = [
-  { to: "/", label: "Dashboard" },
-  { to: "/intake", label: "Intake" },
-  { to: "/register", label: "Register" },
-  { to: "/mitigation", label: "Mitigation" },
-  { to: "/workstreams", label: "Workstreams" },
-  { to: "/engine", label: "Engine" },
-  { to: "/admin", label: "Admin" },
+  { to: "/intake", label: "1. Identify Silos" },
+  { to: "/", label: "2. Assess Priority" },
+  { to: "/mitigation", label: "3. Mitigate Strategy" },
+  { to: "/workstreams", label: "4. Monitor & Sync" },
+  { to: "/admin", label: "5. Admin & Org" },
 ] as const;
+
 
 export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
