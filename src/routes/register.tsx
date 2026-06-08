@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { RiskTable } from "@/components/risk-table";
@@ -11,9 +11,23 @@ import {
   priorityFromRpn,
   type Risk,
   type RiskCategory,
+  type MatrixAction,
 } from "@/lib/risk-data";
 
+const ACTION_VALUES: MatrixAction[] = ["Critical Priority", "Manage", "Monitor"];
+
+type RegisterSearch = { action?: MatrixAction };
+
 export const Route = createFileRoute("/register")({
+  validateSearch: (s: Record<string, unknown>): RegisterSearch => {
+    const a = s.action;
+    return {
+      action:
+        typeof a === "string" && (ACTION_VALUES as string[]).includes(a)
+          ? (a as MatrixAction)
+          : undefined,
+    };
+  },
   head: () => ({
     meta: [
       { title: "Risk Register — RiskSense" },
