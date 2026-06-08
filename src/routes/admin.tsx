@@ -73,7 +73,7 @@ function AdminPage() {
   const [sector, setSector] = useState("Semiconductor & High-Tech Manufacturing");
   const [departments, setDepartments] = useState<Dept[]>(initialDepartments);
   const [newDept, setNewDept] = useState("");
-  const [appetite, setAppetite] = useState(12);
+  const [threshold, setThreshold] = useState(180);
   const [reviewCadence, setReviewCadence] = useState("Weekly");
 
   return (
@@ -276,27 +276,31 @@ function AdminPage() {
         {tab === "Global Risk Settings" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <section className="border border-border bg-card p-5 space-y-5">
-              <h2 className="text-[11px] font-extrabold uppercase tracking-widest">Risk Appetite Engine</h2>
+              <h2 className="text-[11px] font-extrabold uppercase tracking-widest">RPN Escalation Policy</h2>
 
               <div>
                 <div className="flex justify-between mb-2">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                    Global Appetite Threshold
+                    Auto-Escalate Threshold (RPN)
                   </label>
-                  <span className="text-xs font-mono font-bold">Score {appetite}</span>
+                  <span className="text-xs font-mono font-bold">≥ {threshold}</span>
                 </div>
                 <input
                   type="range"
-                  min={1}
-                  max={25}
-                  value={appetite}
-                  onChange={(e) => setAppetite(Number(e.target.value))}
+                  min={60}
+                  max={500}
+                  step={10}
+                  value={threshold}
+                  onChange={(e) => setThreshold(Number(e.target.value))}
                   className="w-full accent-accent"
                 />
                 <div className="flex justify-between text-[10px] font-mono text-muted-foreground mt-1">
-                  <span>Conservative · 1</span>
-                  <span>Aggressive · 25</span>
+                  <span>60 · Medium</span>
+                  <span>500 · Critical only</span>
                 </div>
+                <p className="text-[10px] text-muted-foreground mt-2">
+                  RPN = Severity × Occurrence × Detection (each 1–10, max 1000)
+                </p>
               </div>
 
               <div>
