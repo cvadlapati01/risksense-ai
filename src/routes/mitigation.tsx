@@ -113,7 +113,7 @@ function MitigationPage() {
                                 ? "text-accent"
                                 : pr === "High"
                                   ? "text-warning"
-                                  : pr === "Moderate"
+                                  : pr === "Medium"
                                     ? "text-warning"
                                     : "text-safe"
                             }`}
