@@ -44,6 +44,8 @@ export const Route = createFileRoute("/register")({
 });
 
 function RegisterPage() {
+  const { action } = Route.useSearch();
+  const navigate = useNavigate({ from: "/register" });
   const [list, setList] = useState<Risk[]>(seedRisks);
   const [selected, setSelected] = useState<Risk>(seedRisks[0]);
   const [dialogOpen, setDialogOpen] = useState(false);
