@@ -36,53 +36,8 @@ export function EngineConfigTab() {
             <span>60 min · production</span>
           </div>
         </div>
-
-        <div>
-          <div className="flex justify-between mb-2">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-              Auto-Escalate Threshold (RPN)
-            </label>
-            <span className="text-xs font-mono font-bold">≥ {threshold}</span>
-          </div>
-          <input
-            type="range"
-            min={60}
-            max={500}
-            step={10}
-            value={threshold}
-            onChange={(e) => setThreshold(Number(e.target.value))}
-            className="w-full accent-accent"
-          />
-          <div className="flex justify-between text-[10px] font-mono text-muted-foreground mt-1">
-            <span>60 · Medium</span>
-            <span>500 · Critical only</span>
-          </div>
-        </div>
-
-        <div>
-          <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-2">
-            Risk Appetite
-          </label>
-          <div className="flex gap-2">
-            {(["Low", "Medium", "High"] as const).map((a) => (
-              <button
-                key={a}
-                onClick={() => setAppetite(a)}
-                className={`flex-1 px-3 py-2 text-[11px] font-bold uppercase tracking-widest border ${
-                  appetite === a
-                    ? "bg-foreground text-background border-foreground"
-                    : "border-border hover:bg-muted"
-                }`}
-              >
-                {a}
-              </button>
-            ))}
-          </div>
-          <p className="text-[10px] text-muted-foreground mt-2">
-            Low — flag everything · Medium — standard · High — critical only
-          </p>
-        </div>
       </section>
+
 
       <section className="border border-border bg-card">
         <div className="p-4 border-b border-border flex items-center justify-between">
