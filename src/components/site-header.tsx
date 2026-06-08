@@ -5,6 +5,7 @@ const nav = [
   { to: "/register", label: "Risk Register" },
   { to: "/mitigation", label: "Mitigation Track" },
   { to: "/workstreams", label: "Workstreams" },
+  { to: "/admin", label: "Admin" },
 ] as const;
 
 export function SiteHeader() {
