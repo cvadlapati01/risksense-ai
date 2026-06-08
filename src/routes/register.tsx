@@ -4,6 +4,7 @@ import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { RiskTable } from "@/components/risk-table";
 import { HeatmapMatrix } from "@/components/heatmap-matrix";
 import { ManualRiskDialog } from "@/components/manual-risk-dialog";
+import { RiskDetailDialog } from "@/components/risk-detail-dialog";
 import {
   risks as seedRisks,
   type Risk,
@@ -45,6 +46,7 @@ function RegisterPage() {
   const navigate = useNavigate({ from: "/register" });
   const [list, setList] = useState<Risk[]>(seedRisks);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedRisk, setSelectedRisk] = useState<Risk | null>(null);
 
   const addManual = (m: {
     title: string;
@@ -105,11 +107,14 @@ function RegisterPage() {
             onClearActionFilter={() =>
               navigate({ search: { action: undefined }, replace: true })
             }
+            onSelect={(r) => setSelectedRisk(r)}
+            selectedId={selectedRisk?.id}
           />
         </div>
       </main>
       <SiteFooter />
       <ManualRiskDialog open={dialogOpen} onClose={() => setDialogOpen(false)} onSubmit={addManual} />
+      <RiskDetailDialog risk={selectedRisk} onClose={() => setSelectedRisk(null)} />
     </div>
   );
 }
