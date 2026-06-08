@@ -88,7 +88,11 @@ function Dashboard() {
           />
         </section>
 
+
+        <RiskGantt />
+
         <section className="grid grid-cols-12 gap-6">
+
           <div className="col-span-12 lg:col-span-4 space-y-6">
             <HeatmapMatrix />
             <CriticalEscalations />
