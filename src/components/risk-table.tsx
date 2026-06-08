@@ -126,7 +126,6 @@ export function RiskTable({
               <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">S·O·D</th>
               <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">RPN</th>
               <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">Priority</th>
-              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">Status</th>
               <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight text-right">
                 Owner
               </th>
@@ -165,13 +164,6 @@ export function RiskTable({
                       className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${priorityStyle[priority]}`}
                     >
                       {priority}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${statusStyle[r.status]}`}
-                    >
-                      {r.status}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right text-[11px] font-medium">{r.owner}</td>
