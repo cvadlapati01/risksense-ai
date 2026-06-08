@@ -21,7 +21,6 @@ export function SourceCoverage() {
             <span className="size-2 bg-safe rounded-full" />
             <div className="flex-1 min-w-0">
               <div className="text-xs font-bold">{src}</div>
-              <div className="text-[10px] text-muted-foreground truncate">{meta.description}</div>
             </div>
             <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
               {meta.type}
