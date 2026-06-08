@@ -112,8 +112,13 @@ function RegisterPage() {
               onSelect={setSelected}
               selectedId={selected.id}
               onAddManual={() => setDialogOpen(true)}
+              actionFilter={action}
+              onClearActionFilter={() =>
+                navigate({ search: { action: undefined }, replace: true })
+              }
             />
           </div>
+
 
           <aside className="col-span-12 lg:col-span-4 space-y-4">
             <div className="border border-border bg-card p-5">
