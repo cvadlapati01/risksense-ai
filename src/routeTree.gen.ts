@@ -13,6 +13,7 @@ import { Route as WorkstreamsRouteImport } from './routes/workstreams'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as MitigationRouteImport } from './routes/mitigation'
 import { Route as IntakeRouteImport } from './routes/intake'
+import { Route as EngineRouteImport } from './routes/engine'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -36,6 +37,11 @@ const IntakeRoute = IntakeRouteImport.update({
   path: '/intake',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EngineRoute = EngineRouteImport.update({
+  id: '/engine',
+  path: '/engine',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -50,6 +56,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
   '/register': typeof RegisterRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
   '/register': typeof RegisterRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
   '/register': typeof RegisterRoute
@@ -77,16 +86,25 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/engine'
     | '/intake'
     | '/mitigation'
     | '/register'
     | '/workstreams'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/intake' | '/mitigation' | '/register' | '/workstreams'
+  to:
+    | '/'
+    | '/admin'
+    | '/engine'
+    | '/intake'
+    | '/mitigation'
+    | '/register'
+    | '/workstreams'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/engine'
     | '/intake'
     | '/mitigation'
     | '/register'
@@ -96,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  EngineRoute: typeof EngineRoute
   IntakeRoute: typeof IntakeRoute
   MitigationRoute: typeof MitigationRoute
   RegisterRoute: typeof RegisterRoute
@@ -132,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IntakeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/engine': {
+      id: '/engine'
+      path: '/engine'
+      fullPath: '/engine'
+      preLoaderRoute: typeof EngineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -152,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  EngineRoute: EngineRoute,
   IntakeRoute: IntakeRoute,
   MitigationRoute: MitigationRoute,
   RegisterRoute: RegisterRoute,

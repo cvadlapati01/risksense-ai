@@ -6,6 +6,7 @@ const nav = [
   { to: "/register", label: "Register" },
   { to: "/mitigation", label: "Mitigation" },
   { to: "/workstreams", label: "Workstreams" },
+  { to: "/engine", label: "Engine" },
   { to: "/admin", label: "Admin" },
 ] as const;
 
