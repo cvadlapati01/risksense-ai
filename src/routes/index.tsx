@@ -8,6 +8,7 @@ import { MitigationFocus } from "@/components/mitigation-focus";
 import { CategoryBreakdown } from "@/components/category-breakdown";
 import { SourceCoverage } from "@/components/source-coverage";
 import { SimilarProjects } from "@/components/similar-projects";
+import { RiskGantt } from "@/components/risk-gantt";
 import { kpis, risks, trendSeries } from "@/lib/risk-data";
 
 export const Route = createFileRoute("/")({
@@ -87,7 +88,11 @@ function Dashboard() {
           />
         </section>
 
+
+        <RiskGantt />
+
         <section className="grid grid-cols-12 gap-6">
+
           <div className="col-span-12 lg:col-span-4 space-y-6">
             <HeatmapMatrix />
             <CriticalEscalations />
