@@ -8,6 +8,7 @@ import { MitigationFocus } from "@/components/mitigation-focus";
 import { CategoryBreakdown } from "@/components/category-breakdown";
 import { SourceCoverage } from "@/components/source-coverage";
 import { SimilarProjects } from "@/components/similar-projects";
+import { RiskGantt } from "@/components/risk-gantt";
 import { kpis, risks, trendSeries } from "@/lib/risk-data";
 
 export const Route = createFileRoute("/")({
