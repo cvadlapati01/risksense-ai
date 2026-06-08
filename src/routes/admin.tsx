@@ -270,6 +270,8 @@ function AdminPage() {
           </section>
         )}
 
+        {tab === "Engine Configuration" && <EngineConfigTab />}
+
         {tab === "Global Risk Settings" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <section className="border border-border bg-card p-5 space-y-5">
