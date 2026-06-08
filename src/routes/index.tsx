@@ -128,6 +128,16 @@ function Dashboard() {
             <MitigationFocus risk={focus} />
           </div>
         </section>
+
+        <section className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 lg:col-span-5">
+            <SourceCoverage />
+          </div>
+          <div className="col-span-12 lg:col-span-7 space-y-6">
+            <SimilarProjects />
+            <CategoryBreakdown />
+          </div>
+        </section>
       </main>
 
       <SiteFooter />
