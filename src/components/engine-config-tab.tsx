@@ -3,8 +3,6 @@ import { ALL_SOURCES, dataSourcesMeta } from "@/lib/risk-data";
 
 export function EngineConfigTab() {
   const [interval, setInterval] = useState(15);
-  const [threshold, setThreshold] = useState(180);
-  const [appetite, setAppetite] = useState<"Low" | "Medium" | "High">("Medium");
   const [enabled, setEnabled] = useState<Record<string, boolean>>(
     Object.fromEntries(ALL_SOURCES.map((s) => [s, true])),
   );
