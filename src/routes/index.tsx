@@ -2,13 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { KpiCard } from "@/components/kpi-card";
 import { CriticalEscalations } from "@/components/critical-escalations";
-import { MitigationFocus } from "@/components/mitigation-focus";
 import { CategoryBreakdown } from "@/components/category-breakdown";
-import { SourceCoverage } from "@/components/source-coverage";
-import { SimilarProjects } from "@/components/similar-projects";
 import { RiskGantt } from "@/components/risk-gantt";
 import { EngineStatus } from "@/components/engine-status";
-import { kpis, risks, trendSeries } from "@/lib/risk-data";
+import { kpis, trendSeries } from "@/lib/risk-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,7 +24,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Dashboard() {
-  const focus = risks.find((r) => r.id === "R-788")!;
   const max = Math.max(...trendSeries.map((t) => t.score));
   const min = Math.min(...trendSeries.map((t) => t.score));
 
@@ -128,22 +124,12 @@ function Dashboard() {
                 ))}
               </div>
             </div>
-
-            <MitigationFocus risk={focus} />
           </div>
           <div className="col-span-12 lg:col-span-4">
             <CategoryBreakdown />
           </div>
         </section>
 
-        <section className="grid grid-cols-12 gap-6">
-          <div className="col-span-12 lg:col-span-5">
-            <SourceCoverage />
-          </div>
-          <div className="col-span-12 lg:col-span-7">
-            <SimilarProjects />
-          </div>
-        </section>
       </main>
 
       <SiteFooter />
