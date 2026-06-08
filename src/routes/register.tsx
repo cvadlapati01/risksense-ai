@@ -3,12 +3,9 @@ import { useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { RiskTable } from "@/components/risk-table";
 import { HeatmapMatrix } from "@/components/heatmap-matrix";
-import { MitigationFocus } from "@/components/mitigation-focus";
 import { ManualRiskDialog } from "@/components/manual-risk-dialog";
 import {
   risks as seedRisks,
-  rpn,
-  priorityFromRpn,
   type Risk,
   type RiskCategory,
   type MatrixAction,
@@ -47,7 +44,6 @@ function RegisterPage() {
   const { action } = Route.useSearch();
   const navigate = useNavigate({ from: "/register" });
   const [list, setList] = useState<Risk[]>(seedRisks);
-  const [selected, setSelected] = useState<Risk>(seedRisks[0]);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const addManual = (m: {
@@ -86,12 +82,8 @@ function RegisterPage() {
     };
     const next = [newRisk, ...list];
     setList(next);
-    setSelected(newRisk);
     setDialogOpen(false);
   };
-
-  const score = rpn(selected);
-  const priority = priorityFromRpn(score);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
