@@ -466,7 +466,7 @@ export const ACTION_ROUTES: Record<
 > = {
   "Critical Priority": {
     route: "/mitigation",
-    step: "2. Mitigate Strategy",
+    step: "Mitigate Strategy",
     verb: "Build mitigation playbook",
   },
   Manage: {
@@ -476,7 +476,7 @@ export const ACTION_ROUTES: Record<
   },
   Monitor: {
     route: "/workstreams",
-    step: "3. Monitor & Sync",
+    step: "Monitor & Sync",
     verb: "Watch workstream trends",
   },
 };
