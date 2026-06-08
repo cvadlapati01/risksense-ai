@@ -420,12 +420,22 @@ function MitigationPage() {
                   </div>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-primary text-primary-foreground font-bold text-sm py-3 hover:bg-primary/90 transition-colors"
-                >
-                  Save Mitigation Playbook
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-primary text-primary-foreground font-bold text-sm py-3 hover:bg-primary/90 transition-colors"
+                  >
+                    Save Mitigation Playbook
+                  </button>
+                  <button
+                    type="button"
+                    disabled={!owner}
+                    onClick={() => toast.success("Risk allocated to " + owner)}
+                    className="flex-1 bg-accent text-accent-foreground font-bold text-sm py-3 hover:bg-accent/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Allocate
+                  </button>
+                </div>
               </form>
             )}
           </section>
