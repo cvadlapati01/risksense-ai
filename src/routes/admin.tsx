@@ -21,6 +21,7 @@ export const Route = createFileRoute("/admin")({
 const TABS = [
   "Organization & Departments",
   "User & Role Directory",
+  "Engine Configuration",
   "Global Risk Settings",
   "Master Data",
   "System Audit Trail",
