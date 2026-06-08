@@ -2,10 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { KpiCard } from "@/components/kpi-card";
 import { CriticalEscalations } from "@/components/critical-escalations";
-import { CategoryBreakdown } from "@/components/category-breakdown";
 import { RiskGantt } from "@/components/risk-gantt";
 import { EngineStatus } from "@/components/engine-status";
-import { kpis, trendSeries } from "@/lib/risk-data";
+import { kpis } from "@/lib/risk-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
