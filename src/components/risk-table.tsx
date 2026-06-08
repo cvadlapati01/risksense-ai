@@ -3,7 +3,9 @@ import {
   risks as allRisks,
   rpn,
   priorityFromRpn,
+  actionForRisk,
   type Risk,
+  type MatrixAction,
   ALL_SOURCES,
 } from "@/lib/risk-data";
 
@@ -14,6 +16,8 @@ type Props = {
   selectedId?: string;
   limit?: number;
   onAddManual?: () => void;
+  actionFilter?: MatrixAction;
+  onClearActionFilter?: () => void;
 };
 
 const statusStyle: Record<Risk["status"], string> = {
@@ -31,7 +35,16 @@ const priorityStyle: Record<ReturnType<typeof priorityFromRpn>, string> = {
   Low: "bg-muted text-muted-foreground",
 };
 
-export function RiskTable({ initial, showFilters = true, onSelect, selectedId, limit, onAddManual }: Props) {
+export function RiskTable({
+  initial,
+  showFilters = true,
+  onSelect,
+  selectedId,
+  limit,
+  onAddManual,
+  actionFilter,
+  onClearActionFilter,
+}: Props) {
   const source = initial ?? allRisks;
   const [stream, setStream] = useState<string>("All");
   const [src, setSrc] = useState<string>("All");
@@ -41,11 +54,12 @@ export function RiskTable({ initial, showFilters = true, onSelect, selectedId, l
 
   const rows = useMemo(() => {
     let r = source;
+    if (actionFilter) r = r.filter((x) => actionForRisk(x) === actionFilter);
     if (stream !== "All") r = r.filter((x) => x.workstream === stream);
     if (src !== "All") r = r.filter((x) => x.source === src);
     r = [...r].sort((a, b) => (sortBy === "rpn" ? rpn(b) - rpn(a) : a.id.localeCompare(b.id)));
     return limit ? r.slice(0, limit) : r;
-  }, [source, stream, src, sortBy, limit]);
+  }, [source, stream, src, sortBy, limit, actionFilter]);
 
   return (
     <div className="border border-border bg-card">
