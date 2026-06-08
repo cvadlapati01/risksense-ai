@@ -69,7 +69,12 @@ const ACTION_CATEGORIES = [
 ];
 
 function MitigationPage() {
-  const list = useMemo(() => seedRisks.filter((r) => r.status !== "Mitigated"), []);
+  const { action } = Route.useSearch();
+  const navigate = useNavigate({ from: "/mitigation" });
+  const list = useMemo(() => {
+    const open = seedRisks.filter((r) => r.status !== "Mitigated");
+    return action ? open.filter((r) => actionForRisk(r) === action) : open;
+  }, [action]);
   const [selectedId, setSelectedId] = useState<string>(list[0]?.id ?? "");
   const selected = list.find((r) => r.id === selectedId) ?? list[0];
 
