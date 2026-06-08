@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 
 const nav = [
   { to: "/", label: "Dashboard" },
+  { to: "/quickstart", label: "Quickstart" },
   { to: "/intake", label: "Intake" },
   { to: "/register", label: "Register" },
   { to: "/mitigation", label: "Mitigation" },
