@@ -86,6 +86,38 @@ function MitigationPage() {
   const [email, setEmail] = useState("");
   const [category, setCategory] = useState("");
 
+  // Allocation state
+  type AllocRow = { id: string; scope: string; position: string; task: string; checked: boolean };
+  const [allocRows, setAllocRows] = useState<AllocRow[]>([
+    {
+      id: "a1",
+      scope: "Hamburg Main",
+      position: "Facility Manager (ega) — Major, Tom (Facility Management)",
+      task: "Recording",
+      checked: false,
+    },
+  ]);
+  const [intervalStart, setIntervalStart] = useState("2024-01");
+  const [intervalEnd, setIntervalEnd] = useState("");
+  const [repetition, setRepetition] = useState("Monthly");
+  const [deadlineDays, setDeadlineDays] = useState(5);
+
+  const addAllocRow = () =>
+    setAllocRows((rows) => [
+      ...rows,
+      {
+        id: `a${rows.length + 1}-${Date.now()}`,
+        scope: "",
+        position: "",
+        task: "Recording",
+        checked: false,
+      },
+    ]);
+  const removeAllocRows = () =>
+    setAllocRows((rows) => rows.filter((r) => !r.checked));
+  const updateAllocRow = (id: string, patch: Partial<AllocRow>) =>
+    setAllocRows((rows) => rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+
   const save = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success(`Mitigation playbook saved for ${selected.id}`, {
@@ -333,6 +365,159 @@ function MitigationPage() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                {/* Allocation */}
+                <div className="space-y-4 border-t border-border pt-6">
+                  <div>
+                    <h3 className="text-base font-extrabold tracking-tight">Allocation</h3>
+                  </div>
+
+                  {/* Scope */}
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+                      Scope
+                    </label>
+                    <div className="border border-border overflow-hidden">
+                      <table className="w-full text-xs">
+                        <thead className="bg-muted/50">
+                          <tr className="text-left">
+                            <th className="w-8 p-2"></th>
+                            <th className="p-2 font-bold">Scope</th>
+                            <th className="p-2 font-bold">Position / Function</th>
+                            <th className="p-2 font-bold w-40">Task</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {allocRows.map((row) => (
+                            <tr key={row.id} className="border-t border-border">
+                              <td className="p-2 align-top">
+                                <input
+                                  type="checkbox"
+                                  checked={row.checked}
+                                  onChange={(e) =>
+                                    updateAllocRow(row.id, { checked: e.target.checked })
+                                  }
+                                />
+                              </td>
+                              <td className="p-2">
+                                <input
+                                  value={row.scope}
+                                  onChange={(e) =>
+                                    updateAllocRow(row.id, { scope: e.target.value })
+                                  }
+                                  placeholder="Scope"
+                                  className="w-full bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
+                                />
+                              </td>
+                              <td className="p-2">
+                                <input
+                                  value={row.position}
+                                  onChange={(e) =>
+                                    updateAllocRow(row.id, { position: e.target.value })
+                                  }
+                                  placeholder="Position / Function"
+                                  className="w-full bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
+                                />
+                              </td>
+                              <td className="p-2">
+                                <select
+                                  value={row.task}
+                                  onChange={(e) =>
+                                    updateAllocRow(row.id, { task: e.target.value })
+                                  }
+                                  className="w-full bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
+                                >
+                                  <option>Recording</option>
+                                  <option>Review</option>
+                                  <option>Approval</option>
+                                  <option>Monitoring</option>
+                                </select>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        type="button"
+                        onClick={addAllocRow}
+                        className="px-3 py-1.5 text-xs font-bold border border-border hover:border-primary hover:text-primary"
+                      >
+                        + Add
+                      </button>
+                      <button
+                        type="button"
+                        onClick={removeAllocRows}
+                        className="px-3 py-1.5 text-xs font-bold border border-destructive/40 text-destructive hover:bg-destructive/10"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Interval */}
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+                      Interval
+                    </label>
+                    <div className="border border-border divide-y divide-border">
+                      <div className="grid grid-cols-1 md:grid-cols-4 items-center">
+                        <div className="p-3 bg-muted/30 text-xs font-bold">Start</div>
+                        <div className="p-3">
+                          <input
+                            type="month"
+                            value={intervalStart}
+                            onChange={(e) => setIntervalStart(e.target.value)}
+                            className="w-full bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
+                          />
+                        </div>
+                        <div className="p-3 bg-muted/30 text-xs font-bold">Repetition interval</div>
+                        <div className="p-3">
+                          <select
+                            value={repetition}
+                            onChange={(e) => setRepetition(e.target.value)}
+                            className="w-full bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
+                          >
+                            <option>Daily</option>
+                            <option>Weekly</option>
+                            <option>Monthly</option>
+                            <option>Quarterly</option>
+                            <option>Yearly</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-4 items-center">
+                        <div className="p-3 bg-muted/30 text-xs font-bold">End</div>
+                        <div className="p-3 md:col-span-3">
+                          <input
+                            type="date"
+                            value={intervalEnd}
+                            onChange={(e) => setIntervalEnd(e.target.value)}
+                            className="w-full bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-4 items-center">
+                        <div className="p-3 bg-muted/30 text-xs font-bold">
+                          Deadline for recording
+                        </div>
+                        <div className="p-3 md:col-span-3 flex items-center gap-2">
+                          <input
+                            type="number"
+                            min={0}
+                            value={deadlineDays}
+                            onChange={(e) => setDeadlineDays(Number(e.target.value))}
+                            className="w-20 bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
+                          />
+                          <span className="text-xs text-muted-foreground">
+                            days after end of a reporting period
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <button
