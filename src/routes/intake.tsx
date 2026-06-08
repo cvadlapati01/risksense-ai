@@ -57,12 +57,16 @@ function IntakePage() {
               <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
                 WBS · KLUSA Project ID
               </label>
-              <input
+              <select
                 value={projectId}
                 onChange={(e) => setProjectId(e.target.value)}
-                placeholder="e.g. KLUSA-PHX-CORE-4.2 or WBS-4.3.2"
                 className="w-full border border-border bg-background px-4 py-3 text-sm font-mono focus:outline-none focus:border-foreground"
-              />
+              >
+                <option value="">Select a demo project…</option>
+                <option value="EVAL-2025-MCU">EVAL-2025-MCU</option>
+                <option value="SW-UPDATE-V4">SW-UPDATE-V4</option>
+                <option value="PROD-LINE-EXP">PROD-LINE-EXP</option>
+              </select>
             </div>
             <button
               type="submit"
