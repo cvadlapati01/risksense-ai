@@ -58,14 +58,15 @@ const todos = [
   { icon: ShieldCheck, label: "Quarterly risk re-assessments", count: 4 },
 ];
 
-const whatHappened = [
-  { icon: AlertTriangle, label: "Report a new risk", to: "/risks" },
-  { icon: PlusCircle, label: "Log mitigation update", to: "/risks" },
+const whatHappened: { icon: typeof AlertTriangle; label: string; to: "/intake" | "/mitigation" }[] = [
+  { icon: AlertTriangle, label: "Report a new risk", to: "/intake" },
+  { icon: PlusCircle, label: "Log mitigation update", to: "/mitigation" },
 ];
 
-const stayInformed = [
+const stayInformed: { icon: typeof BookOpen; label: string; to: "/admin" | "/register" | "/workstreams" }[] = [
   { icon: BookOpen, label: "Risk management guideline", to: "/admin" },
-  { icon: FileBarChart, label: "Program risk dashboard", to: "/dashboard" },
+  { icon: FileBarChart, label: "Risk register", to: "/register" },
+  { icon: ShieldCheck, label: "Workstreams overview", to: "/workstreams" },
 ];
 
 function Home() {
