@@ -10,7 +10,7 @@ export const Route = createFileRoute("/admin")({
       {
         name: "description",
         content:
-          "Configure company profile, departments, users, roles, global risk appetite, master data, and audit trail.",
+          "Configure company profile, departments, users, roles, master data, and audit trail.",
       },
       { property: "og:title", content: "Administration — RiskSense" },
       { property: "og:description", content: "Program administration and organisation settings." },
@@ -63,7 +63,7 @@ const auditLog = [
   { ts: "24 OCT 09:41", actor: "j.sterling", action: "Approved mitigation #R-788 budget extension" },
   { ts: "24 OCT 08:12", actor: "system", action: "Nightly risk re-score completed (142 records)" },
   { ts: "23 OCT 17:55", actor: "d.chen", action: "Escalated #R-809 to Steering Committee" },
-  { ts: "23 OCT 14:02", actor: "l.park", action: "Updated risk appetite: Finance threshold 12 → 10" },
+  { ts: "23 OCT 14:02", actor: "l.park", action: "Updated escalation policy: Finance threshold 12 → 10" },
   { ts: "23 OCT 09:30", actor: "p.iyer", action: "Added supplier contingency #R-780" },
 ];
 
@@ -86,7 +86,7 @@ function AdminPage() {
           </p>
           <h1 className="text-2xl font-extrabold tracking-tight">Administration & Organisation</h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-            Configure company profile, manage department silos, users, roles, and global risk appetite engine
+            Configure company profile, manage department silos, users, roles, and global risk engine
             settings.
           </p>
         </header>
