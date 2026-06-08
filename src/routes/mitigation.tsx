@@ -86,6 +86,38 @@ function MitigationPage() {
   const [email, setEmail] = useState("");
   const [category, setCategory] = useState("");
 
+  // Allocation state
+  type AllocRow = { id: string; scope: string; position: string; task: string; checked: boolean };
+  const [allocRows, setAllocRows] = useState<AllocRow[]>([
+    {
+      id: "a1",
+      scope: "Hamburg Main",
+      position: "Facility Manager (ega) — Major, Tom (Facility Management)",
+      task: "Recording",
+      checked: false,
+    },
+  ]);
+  const [intervalStart, setIntervalStart] = useState("2024-01");
+  const [intervalEnd, setIntervalEnd] = useState("");
+  const [repetition, setRepetition] = useState("Monthly");
+  const [deadlineDays, setDeadlineDays] = useState(5);
+
+  const addAllocRow = () =>
+    setAllocRows((rows) => [
+      ...rows,
+      {
+        id: `a${rows.length + 1}-${Date.now()}`,
+        scope: "",
+        position: "",
+        task: "Recording",
+        checked: false,
+      },
+    ]);
+  const removeAllocRows = () =>
+    setAllocRows((rows) => rows.filter((r) => !r.checked));
+  const updateAllocRow = (id: string, patch: Partial<AllocRow>) =>
+    setAllocRows((rows) => rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
+
   const save = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success(`Mitigation playbook saved for ${selected.id}`, {
