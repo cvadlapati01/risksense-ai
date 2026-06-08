@@ -1,10 +1,30 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
-import { risks as seedRisks, rpn, priorityFromRpn, type Risk } from "@/lib/risk-data";
+import {
+  risks as seedRisks,
+  rpn,
+  priorityFromRpn,
+  actionForRisk,
+  type Risk,
+  type MatrixAction,
+} from "@/lib/risk-data";
 import { toast } from "sonner";
 
+const ACTION_VALUES: MatrixAction[] = ["Critical Priority", "Manage", "Monitor"];
+
+type MitigationSearch = { action?: MatrixAction };
+
 export const Route = createFileRoute("/mitigation")({
+  validateSearch: (s: Record<string, unknown>): MitigationSearch => {
+    const a = s.action;
+    return {
+      action:
+        typeof a === "string" && (ACTION_VALUES as string[]).includes(a)
+          ? (a as MatrixAction)
+          : undefined,
+    };
+  },
   head: () => ({
     meta: [
       { title: "Develop Mitigation Plans — RiskSense" },
