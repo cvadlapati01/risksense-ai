@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
+import { MonitorLog } from "@/components/monitor-log";
 import {
   risks,
   severity,
