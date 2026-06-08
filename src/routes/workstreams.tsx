@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
+import { MonitorLog } from "@/components/monitor-log";
 import {
   risks,
   severity,
@@ -80,6 +81,8 @@ function WorkstreamsPage() {
             </button>
           </div>
         )}
+
+        <MonitorLog />
 
         <section className="border border-border bg-card divide-y divide-border">
           {streams.length === 0 && (
