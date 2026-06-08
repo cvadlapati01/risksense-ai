@@ -43,7 +43,7 @@ function IntakePage() {
           <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-1">
             Single Entry Point
           </p>
-          <h1 className="text-2xl font-extrabold tracking-tight">Project Intake</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight">Import or Identify</h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
             Enter a WBS or KLUSA project ID. The engine aggregates risk signals across all nine connected
             systems, scores them with RPN methodology, and returns a structured risk register in seconds.
