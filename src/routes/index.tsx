@@ -138,7 +138,7 @@ function Home() {
                     </div>
                   </div>
                   <Link
-                    to="/risks"
+                    to="/register"
                     className="shrink-0 inline-flex items-center gap-2 border border-border rounded-sm px-3 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     <Play className="size-3.5" />
