@@ -42,17 +42,6 @@ function WorkstreamsPage() {
 
   const filteredRisks = action ? risks.filter((r) => actionForRisk(r) === action) : risks;
 
-  const streams = Array.from(new Set(filteredRisks.map((r) => r.workstream)))
-    .map((ws) => {
-      const list = filteredRisks.filter((r) => r.workstream === ws);
-      const scoreTotal = list.reduce((s, r) => s + r.likelihood * r.impact, 0);
-      const crit = list.filter((r) => r.likelihood * r.impact >= 20).length;
-      return { ws, list, scoreTotal, crit };
-    })
-    .sort((a, b) => b.scoreTotal - a.scoreTotal);
-
-  const max = Math.max(1, ...streams.map((s) => s.scoreTotal));
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
