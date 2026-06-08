@@ -108,9 +108,27 @@ function MitigationPage() {
           </p>
         </header>
 
+        {action && (
+          <div className="flex items-center justify-between gap-3 border border-accent/40 bg-accent/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider">
+            <span>
+              Routed from matrix · Action:{" "}
+              <span className="text-accent">{action}</span> · {list.length} risk
+              {list.length === 1 ? "" : "s"} queued for playbook
+            </span>
+            <button
+              type="button"
+              onClick={() => navigate({ search: { action: undefined }, replace: true })}
+              className="px-2 py-1 border border-border hover:bg-background"
+            >
+              Show all
+            </button>
+          </div>
+        )}
+
         <div className="grid grid-cols-12 gap-6">
           {/* Risks Checklist */}
           <aside className="col-span-12 lg:col-span-3">
+
             <div className="border border-border bg-card p-4">
               <h2 className="text-[11px] font-extrabold uppercase tracking-widest mb-3">
                 Risks Checklist
