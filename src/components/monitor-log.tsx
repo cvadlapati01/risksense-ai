@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { toast } from "sonner";
 import { risks, type Workstream, type RiskCategory } from "@/lib/risk-data";
 
@@ -50,6 +50,13 @@ const CANDIDATE_RISKS: { title: string; workstream: Workstream; category: RiskCa
 const ts = () => new Date().toLocaleTimeString("en-GB", { hour12: false });
 const uid = () => crypto.randomUUID();
 
+const SEVERITY_OPTIONS = [
+  { label: "All", value: "all" },
+  { label: "Info", value: "info" },
+  { label: "Warn", value: "warn" },
+  { label: "Alert", value: "alert" },
+] as const;
+
 export function MonitorLog() {
   const [known, setKnown] = useState<KnownEntry[]>([]);
   const [scan, setScan] = useState<NewRiskEntry[]>([]);
@@ -57,6 +64,28 @@ export function MonitorLog() {
   const cycleRef = useRef(0);
   const addedRef = useRef<Set<string>>(new Set());
   const [, force] = useState(0);
+
+  // Search & filter states
+  const [knownSearch, setKnownSearch] = useState("");
+  const [knownSeverity, setKnownSeverity] = useState<(typeof SEVERITY_OPTIONS)[number]["value"]>("all");
+  const [scanSearch, setScanSearch] = useState("");
+  const [scanSeverity, setScanSeverity] = useState<(typeof SEVERITY_OPTIONS)[number]["value"]>("all");
+
+  const filteredKnown = useMemo(() => {
+    return known.filter((e) => {
+      const matchesSearch = !knownSearch || e.message.toLowerCase().includes(knownSearch.toLowerCase());
+      const matchesSeverity = knownSeverity === "all" || e.level === knownSeverity;
+      return matchesSearch && matchesSeverity;
+    });
+  }, [known, knownSearch, knownSeverity]);
+
+  const filteredScan = useMemo(() => {
+    return scan.filter((e) => {
+      const matchesSearch = !scanSearch || e.message.toLowerCase().includes(scanSearch.toLowerCase());
+      const matchesSeverity = scanSeverity === "all" || e.level === scanSeverity;
+      return matchesSearch && matchesSeverity;
+    });
+  }, [scan, scanSearch, scanSeverity]);
 
   useEffect(() => {
     setKnown([
@@ -142,21 +171,65 @@ export function MonitorLog() {
     toast.success("Risk added to register", { description: rk.title });
   };
 
+  const LogFilterBar = ({
+    search,
+    setSearch,
+    severity,
+    setSeverity,
+    count,
+  }: {
+    search: string;
+    setSearch: (s: string) => void;
+    severity: (typeof SEVERITY_OPTIONS)[number]["value"];
+    setSeverity: (v: (typeof SEVERITY_OPTIONS)[number]["value"]) => void;
+    count: number;
+  }) => (
+    <div className="flex flex-wrap items-center gap-2 px-4 py-2 border-b border-border bg-background/50">
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search log…"
+        className="flex-1 min-w-[120px] px-2 py-1 text-[11px] font-mono bg-background border border-border placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
+      />
+      <select
+        value={severity}
+        onChange={(e) => setSeverity(e.target.value as (typeof SEVERITY_OPTIONS)[number]["value"])}
+        className="px-2 py-1 text-[11px] font-mono bg-background border border-border focus:outline-none focus:border-foreground"
+      >
+        {SEVERITY_OPTIONS.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      <span className="text-[10px] font-mono text-muted-foreground">{count} entries</span>
+    </div>
+  );
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      {/* Heading */}
+      <header>
+        <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-1">
+          Automated Risk Surveillance
+        </p>
+        <h2 className="text-2xl font-extrabold tracking-tight">Monitor & Sync</h2>
+      </header>
+
+      <div className="flex items-center justify-between border border-border bg-card px-4 py-3">
         <div>
           <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
             Automated Monitor Cycle
           </p>
-          <h2 className="text-sm font-extrabold tracking-tight">Monitor & Sync Log</h2>
+          <p className="text-sm font-extrabold tracking-tight">Log</p>
         </div>
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
             <span
               className={`size-2 rounded-full ${running ? "bg-safe animate-pulse" : "bg-muted-foreground"}`}
             />
-            {running ? "Live · cycle 6s" : "Paused"}
+            {running ? "Live · weekly cycle" : "Paused"}
           </span>
           <button
             type="button"
@@ -180,8 +253,20 @@ export function MonitorLog() {
               Tracks register risks, checks mitigation efficacy.
             </p>
           </div>
+          <LogFilterBar
+            search={knownSearch}
+            setSearch={setKnownSearch}
+            severity={knownSeverity}
+            setSeverity={setKnownSeverity}
+            count={filteredKnown.length}
+          />
           <div className="max-h-[420px] overflow-y-auto font-mono text-[11px] divide-y divide-border/60">
-            {known.map((e) => {
+            {filteredKnown.length === 0 && (
+              <div className="px-4 py-8 text-center text-muted-foreground text-[11px]">
+                No entries match your filters.
+              </div>
+            )}
+            {filteredKnown.map((e) => {
               const accent =
                 e.level === "alert"
                   ? "text-accent"
@@ -212,8 +297,20 @@ export function MonitorLog() {
               Scans external sources for emerging threats not yet in the register.
             </p>
           </div>
+          <LogFilterBar
+            search={scanSearch}
+            setSearch={setScanSearch}
+            severity={scanSeverity}
+            setSeverity={setScanSeverity}
+            count={filteredScan.length}
+          />
           <div className="max-h-[420px] overflow-y-auto font-mono text-[11px] divide-y divide-border/60">
-            {scan.map((e) => {
+            {filteredScan.length === 0 && (
+              <div className="px-4 py-8 text-center text-muted-foreground text-[11px]">
+                No entries match your filters.
+              </div>
+            )}
+            {filteredScan.map((e) => {
               const accent =
                 e.level === "alert"
                   ? "text-accent"
