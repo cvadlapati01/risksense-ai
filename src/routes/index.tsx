@@ -9,6 +9,7 @@ import { CategoryBreakdown } from "@/components/category-breakdown";
 import { SourceCoverage } from "@/components/source-coverage";
 import { SimilarProjects } from "@/components/similar-projects";
 import { RiskGantt } from "@/components/risk-gantt";
+import { EngineStatus } from "@/components/engine-status";
 import { kpis, risks, trendSeries } from "@/lib/risk-data";
 
 export const Route = createFileRoute("/")({
@@ -88,6 +89,7 @@ function Dashboard() {
           />
         </section>
 
+        <EngineStatus />
 
         <section className="grid grid-cols-12 gap-6">
           <div className="col-span-12 lg:col-span-9">
