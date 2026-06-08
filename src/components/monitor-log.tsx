@@ -286,9 +286,6 @@ export function MonitorLog() {
         {/* Scan for New Risks */}
         <section className="border border-border bg-card">
           <div className="border-b border-border px-4 py-2">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-              Section 2
-            </p>
             <h3 className="text-sm font-extrabold tracking-tight">Scan for New Risks</h3>
             <p className="text-[11px] text-muted-foreground mt-0.5">
               Scans external sources for emerging threats not yet in the register.
