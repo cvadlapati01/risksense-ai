@@ -1,9 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { KpiCard } from "@/components/kpi-card";
-import { HeatmapMatrix } from "@/components/heatmap-matrix";
 import { CriticalEscalations } from "@/components/critical-escalations";
-import { RiskTable } from "@/components/risk-table";
 import { MitigationFocus } from "@/components/mitigation-focus";
 import { CategoryBreakdown } from "@/components/category-breakdown";
 import { SourceCoverage } from "@/components/source-coverage";
@@ -134,7 +132,7 @@ function Dashboard() {
             <MitigationFocus risk={focus} />
           </div>
           <div className="col-span-12 lg:col-span-4">
-            <CriticalEscalations />
+            <CategoryBreakdown />
           </div>
         </section>
 
@@ -142,9 +140,8 @@ function Dashboard() {
           <div className="col-span-12 lg:col-span-5">
             <SourceCoverage />
           </div>
-          <div className="col-span-12 lg:col-span-7 space-y-6">
+          <div className="col-span-12 lg:col-span-7">
             <SimilarProjects />
-            <CategoryBreakdown />
           </div>
         </section>
       </main>
