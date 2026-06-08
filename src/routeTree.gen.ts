@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkstreamsRouteImport } from './routes/workstreams'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as QuickstartRouteImport } from './routes/quickstart'
 import { Route as MitigationRouteImport } from './routes/mitigation'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -24,6 +25,11 @@ const WorkstreamsRoute = WorkstreamsRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuickstartRoute = QuickstartRouteImport.update({
+  id: '/quickstart',
+  path: '/quickstart',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MitigationRoute = MitigationRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
+  '/quickstart': typeof QuickstartRoute
   '/register': typeof RegisterRoute
   '/workstreams': typeof WorkstreamsRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
+  '/quickstart': typeof QuickstartRoute
   '/register': typeof RegisterRoute
   '/workstreams': typeof WorkstreamsRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
+  '/quickstart': typeof QuickstartRoute
   '/register': typeof RegisterRoute
   '/workstreams': typeof WorkstreamsRoute
 }
@@ -79,16 +88,25 @@ export interface FileRouteTypes {
     | '/admin'
     | '/intake'
     | '/mitigation'
+    | '/quickstart'
     | '/register'
     | '/workstreams'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/intake' | '/mitigation' | '/register' | '/workstreams'
+  to:
+    | '/'
+    | '/admin'
+    | '/intake'
+    | '/mitigation'
+    | '/quickstart'
+    | '/register'
+    | '/workstreams'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/intake'
     | '/mitigation'
+    | '/quickstart'
     | '/register'
     | '/workstreams'
   fileRoutesById: FileRoutesById
@@ -98,6 +116,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   IntakeRoute: typeof IntakeRoute
   MitigationRoute: typeof MitigationRoute
+  QuickstartRoute: typeof QuickstartRoute
   RegisterRoute: typeof RegisterRoute
   WorkstreamsRoute: typeof WorkstreamsRoute
 }
@@ -116,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quickstart': {
+      id: '/quickstart'
+      path: '/quickstart'
+      fullPath: '/quickstart'
+      preLoaderRoute: typeof QuickstartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mitigation': {
@@ -154,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   IntakeRoute: IntakeRoute,
   MitigationRoute: MitigationRoute,
+  QuickstartRoute: QuickstartRoute,
   RegisterRoute: RegisterRoute,
   WorkstreamsRoute: WorkstreamsRoute,
 }
