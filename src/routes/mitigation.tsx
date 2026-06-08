@@ -297,8 +297,75 @@ function MitigationPage() {
                   />
                 </div>
 
+                {/* Responsible Owner + Department */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+                      Responsible Owner
+                    </label>
+                    <select
+                      value={owner}
+                      onChange={(e) => setOwner(e.target.value)}
+                      className="w-full bg-background border border-border p-3 text-xs focus:outline-none focus:border-primary"
+                    >
+                      <option value="">-- Select Responsible Owner --</option>
+                      {Array.from(new Set(seedRisks.map((r) => r.owner))).map((o) => (
+                        <option key={o} value={o}>
+                          {o}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+                      Department Silo (Owner Group)
+                    </label>
+                    <select
+                      value={dept}
+                      onChange={(e) => setDept(e.target.value)}
+                      className="w-full bg-background border border-border p-3 text-xs focus:outline-none focus:border-primary"
+                    >
+                      {DEPARTMENTS.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
+                {/* Owner Email */}
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+                    Owner Email (for coordination sync)
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="owner@company.com"
+                    className="w-full bg-background border border-border p-3 text-xs font-mono focus:outline-none focus:border-primary"
+                  />
+                </div>
 
+                {/* Action Category */}
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+                    Action Category (Taxonomy)
+                  </label>
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full bg-background border border-border p-3 text-xs focus:outline-none focus:border-primary"
+                  >
+                    <option value="">-- Select Action Category --</option>
+                    {ACTION_CATEGORIES.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 {/* Allocation */}
                 <div className="space-y-4 border-t border-border pt-6">
@@ -350,76 +417,6 @@ function MitigationPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Responsible Owner + Department */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
-                        Responsible Owner
-                      </label>
-                      <select
-                        value={owner}
-                        onChange={(e) => setOwner(e.target.value)}
-                        className="w-full bg-background border border-border p-3 text-xs focus:outline-none focus:border-primary"
-                      >
-                        <option value="">-- Select Responsible Owner --</option>
-                        {Array.from(new Set(seedRisks.map((r) => r.owner))).map((o) => (
-                          <option key={o} value={o}>
-                            {o}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
-                        Department Silo (Owner Group)
-                      </label>
-                      <select
-                        value={dept}
-                        onChange={(e) => setDept(e.target.value)}
-                        className="w-full bg-background border border-border p-3 text-xs focus:outline-none focus:border-primary"
-                      >
-                        {DEPARTMENTS.map((d) => (
-                          <option key={d} value={d}>
-                            {d}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Owner Email */}
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
-                      Owner Email (for coordination sync)
-                    </label>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="owner@company.com"
-                      className="w-full bg-background border border-border p-3 text-xs font-mono focus:outline-none focus:border-primary"
-                    />
-                  </div>
-
-                  {/* Action Category */}
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
-                      Action Category (Taxonomy)
-                    </label>
-                    <select
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      className="w-full bg-background border border-border p-3 text-xs focus:outline-none focus:border-primary"
-                    >
-                      <option value="">-- Select Action Category --</option>
-                      {ACTION_CATEGORIES.map((c) => (
-                        <option key={c} value={c}>
-                          {c}
-                        </option>
-                      ))}
-                    </select>
                   </div>
                 </div>
 
