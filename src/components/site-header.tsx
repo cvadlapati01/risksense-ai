@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 
 const nav = [
-  { to: "/intake", label: "1. Identify Silos" },
+  { to: "/intake", label: "1. Identify module" },
   { to: "/", label: "2. Assess Priority" },
   { to: "/mitigation", label: "3. Mitigate Strategy" },
   { to: "/workstreams", label: "4. Monitor & Sync" },
