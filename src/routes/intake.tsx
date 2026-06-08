@@ -9,13 +9,13 @@ import { RiskTable } from "@/components/risk-table";
 export const Route = createFileRoute("/intake")({
   head: () => ({
     meta: [
-      { title: "Project Intake — RiskSense AI" },
+      { title: "Import or Identify — RiskSense AI" },
       {
         name: "description",
         content:
           "Enter a WBS or KLUSA project ID. RiskSense AI aggregates risks across 9 enterprise sources, scores them via RPN, and surfaces similar historical projects.",
       },
-      { property: "og:title", content: "Project Intake — RiskSense AI" },
+      { property: "og:title", content: "Import or Identify — RiskSense AI" },
       { property: "og:description", content: "Single-ID entry to the 4-phase continuous risk engine." },
     ],
   }),
