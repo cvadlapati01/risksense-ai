@@ -106,6 +106,23 @@ export function RiskTable({
           </div>
         )}
       </div>
+      {actionFilter && (
+        <div className="flex items-center justify-between gap-3 px-4 py-2 border-b border-border bg-muted/40 text-[10px] font-bold uppercase tracking-wider">
+          <span>
+            Filtered to action:{" "}
+            <span className="text-accent">{actionFilter}</span> · {rows.length} risk{rows.length === 1 ? "" : "s"}
+          </span>
+          {onClearActionFilter && (
+            <button
+              type="button"
+              onClick={onClearActionFilter}
+              className="px-2 py-1 border border-border hover:bg-background"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+      )}
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead className="bg-muted/60 border-b border-border">
