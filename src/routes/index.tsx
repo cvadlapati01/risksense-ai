@@ -2,10 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { KpiCard } from "@/components/kpi-card";
 import { CriticalEscalations } from "@/components/critical-escalations";
-import { CategoryBreakdown } from "@/components/category-breakdown";
 import { RiskGantt } from "@/components/risk-gantt";
 import { EngineStatus } from "@/components/engine-status";
-import { kpis, trendSeries } from "@/lib/risk-data";
+import { kpis } from "@/lib/risk-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,9 +23,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Dashboard() {
-  const max = Math.max(...trendSeries.map((t) => t.score));
-  const min = Math.min(...trendSeries.map((t) => t.score));
-
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-accent/10">
       <SiteHeader />
@@ -91,42 +87,6 @@ function Dashboard() {
           </div>
           <div className="col-span-12 lg:col-span-3">
             <CriticalEscalations />
-          </div>
-        </section>
-
-        <section className="grid grid-cols-12 gap-6">
-          <div className="col-span-12 lg:col-span-8 space-y-6">
-            <div className="border border-border bg-card p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[11px] font-extrabold uppercase tracking-widest">
-                  Aggregate Exposure Trend
-                </h3>
-                <span className="text-[10px] font-mono text-muted-foreground">8 weeks</span>
-              </div>
-              <div className="h-32 flex items-end gap-2">
-                {trendSeries.map((t, i) => {
-                  const h = ((t.score - min + 20) / (max - min + 20)) * 100;
-                  const last = i === trendSeries.length - 1;
-                  return (
-                    <div key={t.week} className="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        className={`w-full ${last ? "bg-accent" : "bg-foreground/80"} transition-all`}
-                        style={{ height: `${h}%` }}
-                        title={`${t.week}: ${t.score}`}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="flex justify-between mt-2 text-[10px] font-mono text-muted-foreground">
-                {trendSeries.map((t) => (
-                  <span key={t.week}>{t.week}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="col-span-12 lg:col-span-4">
-            <CategoryBreakdown />
           </div>
         </section>
 
