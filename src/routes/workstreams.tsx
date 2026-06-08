@@ -82,6 +82,8 @@ function WorkstreamsPage() {
           </div>
         )}
 
+        <MonitorLog />
+
         <section className="border border-border bg-card divide-y divide-border">
           {streams.length === 0 && (
             <div className="p-6 text-xs text-muted-foreground">
