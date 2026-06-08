@@ -20,13 +20,6 @@ type Props = {
   onClearActionFilter?: () => void;
 };
 
-const statusStyle: Record<Risk["status"], string> = {
-  Escalated: "bg-accent/10 text-accent",
-  Active: "bg-warning/15 text-warning",
-  "Under Review": "bg-muted text-muted-foreground",
-  Mitigated: "bg-safe/20 text-safe",
-  Watching: "bg-muted text-muted-foreground",
-};
 
 const priorityStyle: Record<ReturnType<typeof priorityFromRpn>, string> = {
   Critical: "bg-accent/10 text-accent",
