@@ -221,6 +221,23 @@ function MitigationPage() {
                   </div>
                 </div>
 
+                {/* AI Mitigation Recommendations */}
+                {selected.aiRecommendations.length > 0 && (
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+                      AI Mitigation Recommendations
+                    </label>
+                    <ul className="space-y-2 border border-border bg-muted/30 p-4">
+                      {selected.aiRecommendations.map((rec, i) => (
+                        <li key={i} className="text-xs flex gap-2">
+                          <span className="text-accent font-bold">{i + 1}.</span>
+                          <span>{rec}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {/* Actions */}
                 <div>
                   <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
