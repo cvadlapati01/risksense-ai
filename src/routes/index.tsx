@@ -83,7 +83,7 @@ function Home() {
             Welcome, L. Bolongaita
           </h1>
           <Link
-            to="/dashboard"
+            to="/register"
             className="text-sm text-accent hover:underline"
           >
             Switch to program view
