@@ -53,7 +53,7 @@ function IntakePage() {
         {/* Project ID entry */}
         <section className="border border-border bg-card p-6">
           <form onSubmit={handleStart} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
-            <div className="md:col-span-7">
+            <div className="md:col-span-10">
               <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
                 WBS · KLUSA Project ID
               </label>
@@ -63,16 +63,6 @@ function IntakePage() {
                 placeholder="e.g. KLUSA-PHX-CORE-4.2 or WBS-4.3.2"
                 className="w-full border border-border bg-background px-4 py-3 text-sm font-mono focus:outline-none focus:border-foreground"
               />
-            </div>
-            <div className="md:col-span-3">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
-                Risk Appetite
-              </label>
-              <select className="w-full border border-border bg-background px-3 py-3 text-sm font-medium">
-                <option>Medium — standard</option>
-                <option>Low — flag everything</option>
-                <option>High — critical only</option>
-              </select>
             </div>
             <button
               type="submit"
