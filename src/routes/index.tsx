@@ -23,9 +23,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Dashboard() {
-  const max = Math.max(...trendSeries.map((t) => t.score));
-  const min = Math.min(...trendSeries.map((t) => t.score));
-
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-accent/10">
       <SiteHeader />
