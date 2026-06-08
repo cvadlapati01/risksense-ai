@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { RiskTable } from "@/components/risk-table";
+import { HeatmapMatrix } from "@/components/heatmap-matrix";
 import { MitigationFocus } from "@/components/mitigation-focus";
 import { ManualRiskDialog } from "@/components/manual-risk-dialog";
 import {
@@ -88,7 +89,8 @@ function RegisterPage() {
         </header>
 
         <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-12 lg:col-span-8">
+          <div className="col-span-12 lg:col-span-8 space-y-6">
+            <HeatmapMatrix />
             <RiskTable
               initial={list}
               onSelect={setSelected}

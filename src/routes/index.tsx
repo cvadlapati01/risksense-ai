@@ -1,9 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { KpiCard } from "@/components/kpi-card";
-import { HeatmapMatrix } from "@/components/heatmap-matrix";
 import { CriticalEscalations } from "@/components/critical-escalations";
-import { RiskTable } from "@/components/risk-table";
 import { MitigationFocus } from "@/components/mitigation-focus";
 import { CategoryBreakdown } from "@/components/category-breakdown";
 import { SourceCoverage } from "@/components/source-coverage";
@@ -101,14 +99,7 @@ function Dashboard() {
         </section>
 
         <section className="grid grid-cols-12 gap-6">
-
-          <div className="col-span-12 lg:col-span-4 space-y-6">
-            <HeatmapMatrix />
-          </div>
-
           <div className="col-span-12 lg:col-span-8 space-y-6">
-            <RiskTable limit={6} showFilters={false} />
-
             <div className="border border-border bg-card p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-[11px] font-extrabold uppercase tracking-widest">
@@ -140,15 +131,17 @@ function Dashboard() {
 
             <MitigationFocus risk={focus} />
           </div>
+          <div className="col-span-12 lg:col-span-4">
+            <CategoryBreakdown />
+          </div>
         </section>
 
         <section className="grid grid-cols-12 gap-6">
           <div className="col-span-12 lg:col-span-5">
             <SourceCoverage />
           </div>
-          <div className="col-span-12 lg:col-span-7 space-y-6">
+          <div className="col-span-12 lg:col-span-7">
             <SimilarProjects />
-            <CategoryBreakdown />
           </div>
         </section>
       </main>
