@@ -464,7 +464,7 @@ export const similarProjects = [
 export const dataSourcesMeta: Record<DataSource, { type: "Internal" | "External" | "Manual"; description: string }> = {
   KLUSA: { type: "Internal", description: "Project metadata, WBS codes, milestones, budgets, owners" },
   "FMEA-DB": { type: "Internal", description: "Historical failure modes, effects, causes, RPN scores" },
-  "PLATO e1ns": { type: "Internal", description: "Active-project FMEA: functions, failures, controls, RPN" },
+  "PLATO e1ns": { type: "Internal", description: "Active-project FMEA" },
   Windchill: { type: "Internal", description: "PLM: design docs, ECOs, component specs, version history" },
   "Lessons Learned": { type: "Internal", description: "Post-project retrospectives and mitigation outcomes" },
   "FAR-DB": { type: "Internal", description: "Failure Analysis Reports — root causes, field returns" },
