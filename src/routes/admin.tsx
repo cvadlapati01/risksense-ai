@@ -73,7 +73,7 @@ function AdminPage() {
   const [sector, setSector] = useState("Semiconductor & High-Tech Manufacturing");
   const [departments, setDepartments] = useState<Dept[]>(initialDepartments);
   const [newDept, setNewDept] = useState("");
-  const [appetite, setAppetite] = useState(12);
+  const [threshold, setThreshold] = useState(180);
   const [reviewCadence, setReviewCadence] = useState("Weekly");
 
   return (
