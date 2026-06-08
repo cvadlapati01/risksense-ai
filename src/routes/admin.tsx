@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
-import { ALL_SOURCES, dataSourcesMeta } from "@/lib/risk-data";
+import { EngineConfigTab } from "@/components/engine-config-tab";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
