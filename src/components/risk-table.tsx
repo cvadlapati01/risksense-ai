@@ -1,5 +1,11 @@
 import { useMemo, useState } from "react";
-import { risks as allRisks, severity, severityColor, type Risk } from "@/lib/risk-data";
+import {
+  risks as allRisks,
+  rpn,
+  priorityFromRpn,
+  type Risk,
+  ALL_SOURCES,
+} from "@/lib/risk-data";
 
 type Props = {
   initial?: Risk[];
@@ -7,6 +13,7 @@ type Props = {
   onSelect?: (r: Risk) => void;
   selectedId?: string;
   limit?: number;
+  onAddManual?: () => void;
 };
 
 const statusStyle: Record<Risk["status"], string> = {
@@ -17,42 +24,68 @@ const statusStyle: Record<Risk["status"], string> = {
   Watching: "bg-muted text-muted-foreground",
 };
 
-export function RiskTable({ initial, showFilters = true, onSelect, selectedId, limit }: Props) {
+const priorityStyle: Record<ReturnType<typeof priorityFromRpn>, string> = {
+  Critical: "bg-accent/10 text-accent",
+  High: "bg-warning/15 text-warning",
+  Medium: "bg-warning/10 text-warning",
+  Low: "bg-muted text-muted-foreground",
+};
+
+export function RiskTable({ initial, showFilters = true, onSelect, selectedId, limit, onAddManual }: Props) {
   const source = initial ?? allRisks;
   const [stream, setStream] = useState<string>("All");
-  const [sortBy, setSortBy] = useState<"score" | "id">("score");
+  const [src, setSrc] = useState<string>("All");
+  const [sortBy, setSortBy] = useState<"rpn" | "id">("rpn");
 
   const streams = useMemo(() => ["All", ...Array.from(new Set(source.map((r) => r.workstream)))], [source]);
 
   const rows = useMemo(() => {
-    let r = stream === "All" ? source : source.filter((x) => x.workstream === stream);
-    r = [...r].sort((a, b) =>
-      sortBy === "score" ? b.likelihood * b.impact - a.likelihood * a.impact : a.id.localeCompare(b.id),
-    );
+    let r = source;
+    if (stream !== "All") r = r.filter((x) => x.workstream === stream);
+    if (src !== "All") r = r.filter((x) => x.source === src);
+    r = [...r].sort((a, b) => (sortBy === "rpn" ? rpn(b) - rpn(a) : a.id.localeCompare(b.id)));
     return limit ? r.slice(0, limit) : r;
-  }, [source, stream, sortBy, limit]);
+  }, [source, stream, src, sortBy, limit]);
 
   return (
     <div className="border border-border bg-card">
       <div className="flex items-center justify-between p-4 border-b border-border gap-4 flex-wrap">
         <h2 className="text-[11px] font-extrabold uppercase tracking-widest">Risk Register (Live View)</h2>
         {showFilters && (
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center flex-wrap">
             <select
               value={stream}
               onChange={(e) => setStream(e.target.value)}
-              className="px-3 py-1 border border-border text-[10px] font-bold uppercase bg-background hover:bg-muted"
+              className="px-2 py-1 border border-border text-[10px] font-bold uppercase bg-background"
             >
               {streams.map((s) => (
                 <option key={s}>{s}</option>
               ))}
             </select>
+            <select
+              value={src}
+              onChange={(e) => setSrc(e.target.value)}
+              className="px-2 py-1 border border-border text-[10px] font-bold uppercase bg-background"
+            >
+              <option>All</option>
+              {ALL_SOURCES.map((s) => (
+                <option key={s}>{s}</option>
+              ))}
+            </select>
             <button
-              onClick={() => setSortBy(sortBy === "score" ? "id" : "score")}
+              onClick={() => setSortBy(sortBy === "rpn" ? "id" : "rpn")}
               className="px-3 py-1 border border-border text-[10px] font-bold uppercase hover:bg-muted"
             >
-              Sort: {sortBy}
+              Sort: {sortBy.toUpperCase()}
             </button>
+            {onAddManual && (
+              <button
+                onClick={onAddManual}
+                className="px-3 py-1 border border-foreground text-[10px] font-bold uppercase hover:bg-muted"
+              >
+                + Manual Risk
+              </button>
+            )}
             <button className="px-3 py-1 bg-foreground text-background text-[10px] font-bold uppercase">
               Export CSV
             </button>
@@ -64,14 +97,11 @@ export function RiskTable({ initial, showFilters = true, onSelect, selectedId, l
           <thead className="bg-muted/60 border-b border-border">
             <tr>
               <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">ID</th>
-              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
-                Risk Title
-              </th>
-              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
-                Stream
-              </th>
-              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">L × I</th>
-              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">Score</th>
+              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">Risk</th>
+              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">Source</th>
+              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">S·O·D</th>
+              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">RPN</th>
+              <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">Priority</th>
               <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">Status</th>
               <th className="px-4 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-tight text-right">
                 Owner
@@ -80,9 +110,8 @@ export function RiskTable({ initial, showFilters = true, onSelect, selectedId, l
           </thead>
           <tbody className="divide-y divide-border">
             {rows.map((r) => {
-              const score = r.likelihood * r.impact;
-              const sev = severity(score);
-              const color = severityColor(sev);
+              const score = rpn(r);
+              const priority = priorityFromRpn(score);
               const isSelected = r.id === selectedId;
               return (
                 <tr
@@ -95,15 +124,23 @@ export function RiskTable({ initial, showFilters = true, onSelect, selectedId, l
                   <td className="px-4 py-3 font-mono text-[11px]">{r.id}</td>
                   <td className="px-4 py-3">
                     <div className="text-xs font-bold">{r.title}</div>
-                    <div className="text-[10px] text-muted-foreground">{r.subtitle}</div>
-                  </td>
-                  <td className="px-4 py-3 text-[10px] font-medium">{r.workstream}</td>
-                  <td className="px-4 py-3 text-[10px] font-mono">
-                    {r.likelihood} × {r.impact}
+                    <div className="text-[10px] text-muted-foreground">
+                      {r.subtitle} · {r.workstream}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`px-2 py-0.5 ${color.bg} ${color.text} text-[10px] font-extrabold`}>
-                      {score.toString().padStart(2, "0")}
+                    <div className="text-[10px] font-bold">{r.source}</div>
+                    <div className="text-[10px] font-mono text-muted-foreground">{r.sourceRef}</div>
+                  </td>
+                  <td className="px-4 py-3 text-[10px] font-mono tabular-nums">
+                    {r.severity}·{r.occurrence}·{r.detection}
+                  </td>
+                  <td className="px-4 py-3 font-mono font-extrabold tabular-nums text-xs">{score}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${priorityStyle[priority]}`}
+                    >
+                      {priority}
                     </span>
                   </td>
                   <td className="px-4 py-3">

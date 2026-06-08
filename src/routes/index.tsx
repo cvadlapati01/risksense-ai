@@ -5,6 +5,9 @@ import { HeatmapMatrix } from "@/components/heatmap-matrix";
 import { CriticalEscalations } from "@/components/critical-escalations";
 import { RiskTable } from "@/components/risk-table";
 import { MitigationFocus } from "@/components/mitigation-focus";
+import { CategoryBreakdown } from "@/components/category-breakdown";
+import { SourceCoverage } from "@/components/source-coverage";
+import { SimilarProjects } from "@/components/similar-projects";
 import { kpis, risks, trendSeries } from "@/lib/risk-data";
 
 export const Route = createFileRoute("/")({
@@ -123,6 +126,16 @@ function Dashboard() {
             </div>
 
             <MitigationFocus risk={focus} />
+          </div>
+        </section>
+
+        <section className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 lg:col-span-5">
+            <SourceCoverage />
+          </div>
+          <div className="col-span-12 lg:col-span-7 space-y-6">
+            <SimilarProjects />
+            <CategoryBreakdown />
           </div>
         </section>
       </main>
