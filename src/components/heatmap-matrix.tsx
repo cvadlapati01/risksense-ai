@@ -1,39 +1,34 @@
 import { useMemo, useState } from "react";
-import { risks, type Risk } from "@/lib/risk-data";
+import { Link } from "@tanstack/react-router";
+import {
+  risks,
+  actionFor,
+  actionForRisk,
+  bucket3,
+  ACTION_ROUTES,
+  type MatrixAction,
+  type Risk,
+} from "@/lib/risk-data";
 
 type Cell = { likelihood: number; impact: number; items: Risk[] };
 
-// Bucket a 1-5 score into 1 (Low), 2 (Med), 3 (High)
-function bucket(v: number): 1 | 2 | 3 {
-  if (v <= 2) return 1;
-  if (v <= 3) return 2;
-  return 3;
-}
+const ACTIONS: MatrixAction[] = ["Critical Priority", "Manage", "Monitor"];
 
-type Action = "Critical Priority" | "Manage" | "Monitor";
-
-function actionFor(likelihood: number, impact: number): Action {
-  const score = likelihood * impact; // 1..9
-  if (score >= 6) return "Critical Priority";
-  if (score >= 3) return "Manage";
-  return "Monitor";
-}
-
-const actionStyle: Record<Action, { cell: string; chip: string; label: string }> = {
+const actionStyle: Record<MatrixAction, { cell: string; chip: string; ring: string }> = {
   "Critical Priority": {
     cell: "bg-accent/80",
-    chip: "bg-accent text-accent-foreground",
-    label: "Critical Priority",
+    chip: "bg-accent text-accent-foreground hover:opacity-90",
+    ring: "ring-accent",
   },
   Manage: {
     cell: "bg-warning/60",
-    chip: "bg-warning text-foreground",
-    label: "Manage",
+    chip: "bg-warning text-foreground hover:opacity-90",
+    ring: "ring-warning",
   },
   Monitor: {
     cell: "bg-safe/50",
-    chip: "bg-safe text-foreground",
-    label: "Monitor",
+    chip: "bg-safe text-foreground hover:opacity-90",
+    ring: "ring-safe",
   },
 };
 
@@ -46,7 +41,7 @@ export function HeatmapMatrix() {
           likelihood,
           impact,
           items: risks.filter(
-            (r) => bucket(r.likelihood) === likelihood && bucket(r.impact) === impact,
+            (r) => bucket3(r.likelihood) === likelihood && bucket3(r.impact) === impact,
           ),
         });
       }
@@ -54,7 +49,18 @@ export function HeatmapMatrix() {
     return out;
   }, []);
 
+  const countsByAction = useMemo(() => {
+    const c: Record<MatrixAction, number> = {
+      "Critical Priority": 0,
+      Manage: 0,
+      Monitor: 0,
+    };
+    for (const r of risks) c[actionForRisk(r)] += 1;
+    return c;
+  }, []);
+
   const [hover, setHover] = useState<Cell | null>(null);
+  const hoverAction = hover ? actionFor(hover.likelihood, hover.impact) : null;
 
   return (
     <section className="border border-border bg-card p-5">
@@ -74,17 +80,19 @@ export function HeatmapMatrix() {
           {cells.map((c) => {
             const action = actionFor(c.likelihood, c.impact);
             const style = actionStyle[action];
+            const target = ACTION_ROUTES[action];
             return (
-              <button
-                type="button"
+              <Link
                 key={`${c.likelihood}-${c.impact}`}
+                to={target.route}
+                search={{ action }}
                 onMouseEnter={() => setHover(c)}
                 onMouseLeave={() => setHover(null)}
                 className={`${style.cell} relative flex items-center justify-center text-[10px] font-mono font-bold text-foreground/80 hover:outline hover:outline-2 hover:outline-foreground transition-all`}
-                aria-label={`Likelihood ${c.likelihood} Impact ${c.impact}, ${c.items.length} risks, ${action}`}
+                aria-label={`Likelihood ${c.likelihood} Impact ${c.impact} — ${c.items.length} risks — ${action}`}
               >
                 {c.items.length > 0 ? c.items.length : ""}
-              </button>
+              </Link>
             );
           })}
         </div>
@@ -94,20 +102,51 @@ export function HeatmapMatrix() {
         <span className="text-right">Severity / Impact ↑</span>
       </div>
 
-      {/* Action legend — exactly 3 */}
-      <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-wider">
-        {(["Critical Priority", "Manage", "Monitor"] as Action[]).map((a) => (
-          <span key={a} className={`${actionStyle[a].chip} px-2 py-1`}>
-            {a}
-          </span>
-        ))}
+      {/* Action legend — each chip routes to its FMEA workflow step */}
+      <div className="mt-4 border-t border-border pt-3">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
+          Actions · routed to workflow step
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          {ACTIONS.map((a) => {
+            const target = ACTION_ROUTES[a];
+            const isHovered = hoverAction === a;
+            return (
+              <Link
+                key={a}
+                to={target.route}
+                search={{ action: a }}
+                className={`block border border-border bg-background p-2.5 transition-all hover:border-foreground ${
+                  isHovered ? `ring-2 ${actionStyle[a].ring}` : ""
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span
+                    className={`${actionStyle[a].chip} px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider`}
+                  >
+                    {a}
+                  </span>
+                  <span className="font-mono text-[10px] font-bold tabular-nums">
+                    {countsByAction[a]}
+                  </span>
+                </div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-foreground/80">
+                  → {target.step}
+                </div>
+                <div className="text-[10px] text-muted-foreground leading-snug">
+                  {target.verb}
+                </div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       <div className="mt-4 h-16 border-t border-border pt-3 text-xs">
         {hover ? (
           <div>
             <div className="font-mono text-[10px] text-muted-foreground uppercase">
-              L{hover.likelihood} × I{hover.impact} — Action: {actionFor(hover.likelihood, hover.impact)}
+              L{hover.likelihood} × I{hover.impact} — Action: {hoverAction}
             </div>
             {hover.items.length === 0 ? (
               <div className="text-muted-foreground">No risks in this cell</div>
@@ -124,7 +163,7 @@ export function HeatmapMatrix() {
           </div>
         ) : (
           <div className="text-muted-foreground text-[11px]">
-            Hover a cell to inspect risks at that exposure.
+            Hover a cell or chip — click to jump to the wired workflow step.
           </div>
         )}
       </div>

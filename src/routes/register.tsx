@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { RiskTable } from "@/components/risk-table";
@@ -11,9 +11,23 @@ import {
   priorityFromRpn,
   type Risk,
   type RiskCategory,
+  type MatrixAction,
 } from "@/lib/risk-data";
 
+const ACTION_VALUES: MatrixAction[] = ["Critical Priority", "Manage", "Monitor"];
+
+type RegisterSearch = { action?: MatrixAction };
+
 export const Route = createFileRoute("/register")({
+  validateSearch: (s: Record<string, unknown>): RegisterSearch => {
+    const a = s.action;
+    return {
+      action:
+        typeof a === "string" && (ACTION_VALUES as string[]).includes(a)
+          ? (a as MatrixAction)
+          : undefined,
+    };
+  },
   head: () => ({
     meta: [
       { title: "Risk Register — RiskSense" },
@@ -30,6 +44,8 @@ export const Route = createFileRoute("/register")({
 });
 
 function RegisterPage() {
+  const { action } = Route.useSearch();
+  const navigate = useNavigate({ from: "/register" });
   const [list, setList] = useState<Risk[]>(seedRisks);
   const [selected, setSelected] = useState<Risk>(seedRisks[0]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -96,8 +112,13 @@ function RegisterPage() {
               onSelect={setSelected}
               selectedId={selected.id}
               onAddManual={() => setDialogOpen(true)}
+              actionFilter={action}
+              onClearActionFilter={() =>
+                navigate({ search: { action: undefined }, replace: true })
+              }
             />
           </div>
+
 
           <aside className="col-span-12 lg:col-span-4 space-y-4">
             <div className="border border-border bg-card p-5">

@@ -431,6 +431,56 @@ export function severityColor(sev: ReturnType<typeof severity>): {
   }
 }
 
+// ─── Matrix actions wired to FMEA workflow steps ────────────────────────────
+export type MatrixAction = "Critical Priority" | "Manage" | "Monitor";
+
+/** Bucket a 1-5 likelihood/impact score into 1 (Low), 2 (Med), 3 (High). */
+export function bucket3(v: number): 1 | 2 | 3 {
+  if (v <= 2) return 1;
+  if (v <= 3) return 2;
+  return 3;
+}
+
+/** 3x3 matrix → action label. */
+export function actionFor(likelihood: number, impact: number): MatrixAction {
+  const score = bucket3(likelihood) * bucket3(impact); // 1..9
+  if (score >= 6) return "Critical Priority";
+  if (score >= 3) return "Manage";
+  return "Monitor";
+}
+
+/** Action assigned to a risk based on its likelihood/impact. */
+export function actionForRisk(r: Risk): MatrixAction {
+  return actionFor(r.likelihood, r.impact);
+}
+
+/**
+ * Each matrix action wires to a specific step in the FMEA workflow.
+ * - Critical Priority → Mitigate Strategy (build playbook now)
+ * - Manage           → Risk Register (track + assign owner)
+ * - Monitor          → Monitor & Sync (watch trends across workstreams)
+ */
+export const ACTION_ROUTES: Record<
+  MatrixAction,
+  { route: "/mitigation" | "/register" | "/workstreams"; step: string; verb: string }
+> = {
+  "Critical Priority": {
+    route: "/mitigation",
+    step: "2. Mitigate Strategy",
+    verb: "Build mitigation playbook",
+  },
+  Manage: {
+    route: "/register",
+    step: "Risk Register",
+    verb: "Assign owner & track",
+  },
+  Monitor: {
+    route: "/workstreams",
+    step: "3. Monitor & Sync",
+    verb: "Watch workstream trends",
+  },
+};
+
 export const similarProjects = [
   {
     id: "PHX-NORTH-22",

@@ -1,8 +1,26 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
-import { risks, severity } from "@/lib/risk-data";
+import {
+  risks,
+  severity,
+  actionForRisk,
+  type MatrixAction,
+} from "@/lib/risk-data";
+
+const ACTION_VALUES: MatrixAction[] = ["Critical Priority", "Manage", "Monitor"];
+
+type WorkstreamSearch = { action?: MatrixAction };
 
 export const Route = createFileRoute("/workstreams")({
+  validateSearch: (s: Record<string, unknown>): WorkstreamSearch => {
+    const a = s.action;
+    return {
+      action:
+        typeof a === "string" && (ACTION_VALUES as string[]).includes(a)
+          ? (a as MatrixAction)
+          : undefined,
+    };
+  },
   head: () => ({
     meta: [
       { title: "Workstreams — RiskSense" },
@@ -19,14 +37,21 @@ export const Route = createFileRoute("/workstreams")({
 });
 
 function WorkstreamsPage() {
-  const streams = Array.from(new Set(risks.map((r) => r.workstream))).map((ws) => {
-    const list = risks.filter((r) => r.workstream === ws);
-    const scoreTotal = list.reduce((s, r) => s + r.likelihood * r.impact, 0);
-    const crit = list.filter((r) => r.likelihood * r.impact >= 20).length;
-    return { ws, list, scoreTotal, crit };
-  }).sort((a, b) => b.scoreTotal - a.scoreTotal);
+  const { action } = Route.useSearch();
+  const navigate = useNavigate({ from: "/workstreams" });
 
-  const max = Math.max(...streams.map((s) => s.scoreTotal));
+  const filteredRisks = action ? risks.filter((r) => actionForRisk(r) === action) : risks;
+
+  const streams = Array.from(new Set(filteredRisks.map((r) => r.workstream)))
+    .map((ws) => {
+      const list = filteredRisks.filter((r) => r.workstream === ws);
+      const scoreTotal = list.reduce((s, r) => s + r.likelihood * r.impact, 0);
+      const crit = list.filter((r) => r.likelihood * r.impact >= 20).length;
+      return { ws, list, scoreTotal, crit };
+    })
+    .sort((a, b) => b.scoreTotal - a.scoreTotal);
+
+  const max = Math.max(1, ...streams.map((s) => s.scoreTotal));
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -39,7 +64,29 @@ function WorkstreamsPage() {
           <h1 className="text-2xl font-extrabold tracking-tight">Workstream Exposure</h1>
         </header>
 
+        {action && (
+          <div className="flex items-center justify-between gap-3 border border-accent/40 bg-accent/5 px-4 py-2 text-[11px] font-bold uppercase tracking-wider">
+            <span>
+              Routed from matrix · Action:{" "}
+              <span className="text-accent">{action}</span> · {filteredRisks.length} risk
+              {filteredRisks.length === 1 ? "" : "s"} under watch
+            </span>
+            <button
+              type="button"
+              onClick={() => navigate({ search: { action: undefined }, replace: true })}
+              className="px-2 py-1 border border-border hover:bg-background"
+            >
+              Show all
+            </button>
+          </div>
+        )}
+
         <section className="border border-border bg-card divide-y divide-border">
+          {streams.length === 0 && (
+            <div className="p-6 text-xs text-muted-foreground">
+              No risks match this action filter.
+            </div>
+          )}
           {streams.map(({ ws, list, scoreTotal, crit }) => {
             const w = (scoreTotal / max) * 100;
             return (
