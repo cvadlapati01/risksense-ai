@@ -308,9 +308,6 @@ function MitigationPage() {
 
                   {/* Scope */}
                   <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
-                      Scope
-                    </label>
                     <div className="border border-border overflow-hidden">
                       <table className="w-full text-xs">
                         <thead className="bg-muted/50">
@@ -392,11 +389,8 @@ function MitigationPage() {
 
                   {/* Interval */}
                   <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block mb-2">
-                      Interval
-                    </label>
                     <div className="border border-border divide-y divide-border">
-                      <div className="grid grid-cols-1 md:grid-cols-4 items-center">
+                      <div className="grid grid-cols-1 md:grid-cols-2 items-center">
                         <div className="p-3 bg-muted/30 text-xs font-bold">Start</div>
                         <div className="p-3">
                           <input
@@ -405,20 +399,6 @@ function MitigationPage() {
                             onChange={(e) => setIntervalStart(e.target.value)}
                             className="w-full bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
                           />
-                        </div>
-                        <div className="p-3 bg-muted/30 text-xs font-bold">Repetition interval</div>
-                        <div className="p-3">
-                          <select
-                            value={repetition}
-                            onChange={(e) => setRepetition(e.target.value)}
-                            className="w-full bg-background border border-border px-2 py-1 text-xs focus:outline-none focus:border-primary"
-                          >
-                            <option>Daily</option>
-                            <option>Weekly</option>
-                            <option>Monthly</option>
-                            <option>Quarterly</option>
-                            <option>Yearly</option>
-                          </select>
                         </div>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-4 items-center">
