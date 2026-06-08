@@ -3,7 +3,6 @@ import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { MonitorLog } from "@/components/monitor-log";
 import {
   risks,
-  severity,
   actionForRisk,
   type MatrixAction,
 } from "@/lib/risk-data";
