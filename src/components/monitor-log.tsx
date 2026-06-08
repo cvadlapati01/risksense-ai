@@ -116,7 +116,8 @@ export function MonitorLog() {
   }, [running]);
 
   const addToRegister = (entry: LogEntry) => {
-    if (!entry.risk || addedRef.current.has(entry.id)) return;
+    const r = entry.risk;
+    if (!r || addedRef.current.has(entry.id)) return;
     addedRef.current.add(entry.id);
     setEntries((prev) => [
       {
@@ -124,11 +125,11 @@ export function MonitorLog() {
         timestamp: ts(),
         cycle: entry.cycle,
         level: "info",
-        message: `✓ Added to Risk Register — ${entry.risk.title} (${entry.risk.workstream})`,
+        message: `✓ Added to Risk Register — ${r.title} (${r.workstream})`,
       },
       ...prev,
     ]);
-    toast.success("Risk added to register", { description: entry.risk.title });
+    toast.success("Risk added to register", { description: r.title });
   };
 
   return (
