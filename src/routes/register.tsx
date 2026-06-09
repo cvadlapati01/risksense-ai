@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { RiskTable } from "@/components/risk-table";
 import { HeatmapMatrix } from "@/components/heatmap-matrix";
@@ -7,6 +7,8 @@ import { ManualRiskDialog } from "@/components/manual-risk-dialog";
 import { RiskDetailDialog } from "@/components/risk-detail-dialog";
 import {
   risks as seedRisks,
+  getAiRisks,
+  subscribeAiRisks,
   type Risk,
   type RiskCategory,
   type MatrixAction,
@@ -44,9 +46,20 @@ export const Route = createFileRoute("/register")({
 function RegisterPage() {
   const { action } = Route.useSearch();
   const navigate = useNavigate({ from: "/register" });
-  const [list, setList] = useState<Risk[]>(seedRisks);
+  const [list, setList] = useState<Risk[]>([...getAiRisks(), ...seedRisks]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedRisk, setSelectedRisk] = useState<Risk | null>(null);
+
+  useEffect(() => {
+    const unsub = subscribeAiRisks(() => {
+      setList((prev) => {
+        const ai = getAiRisks();
+        const manual = prev.filter((r) => !r.id.startsWith("AI-"));
+        return [...ai, ...manual];
+      });
+    });
+    return unsub;
+  }, []);
 
   const addManual = (m: {
     title: string;

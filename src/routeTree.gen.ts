@@ -14,6 +14,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as MitigationRouteImport } from './routes/mitigation'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as EngineRouteImport } from './routes/engine'
+import { Route as AiAnalyzerRouteImport } from './routes/ai-analyzer'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -42,6 +43,11 @@ const EngineRoute = EngineRouteImport.update({
   path: '/engine',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiAnalyzerRoute = AiAnalyzerRouteImport.update({
+  id: '/ai-analyzer',
+  path: '/ai-analyzer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -56,6 +62,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/ai-analyzer': typeof AiAnalyzerRoute
   '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/ai-analyzer': typeof AiAnalyzerRoute
   '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/ai-analyzer': typeof AiAnalyzerRoute
   '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/ai-analyzer'
     | '/engine'
     | '/intake'
     | '/mitigation'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
+    | '/ai-analyzer'
     | '/engine'
     | '/intake'
     | '/mitigation'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/ai-analyzer'
     | '/engine'
     | '/intake'
     | '/mitigation'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  AiAnalyzerRoute: typeof AiAnalyzerRoute
   EngineRoute: typeof EngineRoute
   IntakeRoute: typeof IntakeRoute
   MitigationRoute: typeof MitigationRoute
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EngineRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-analyzer': {
+      id: '/ai-analyzer'
+      path: '/ai-analyzer'
+      fullPath: '/ai-analyzer'
+      preLoaderRoute: typeof AiAnalyzerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -178,6 +198,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  AiAnalyzerRoute: AiAnalyzerRoute,
   EngineRoute: EngineRoute,
   IntakeRoute: IntakeRoute,
   MitigationRoute: MitigationRoute,
