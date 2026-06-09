@@ -79,7 +79,7 @@ function Dashboard() {
           />
         </section>
 
-        <EngineStatus />
+        
 
         <section className="grid grid-cols-12 gap-6">
           <div className="col-span-12 lg:col-span-9">
