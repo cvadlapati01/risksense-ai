@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
-import { EngineRunner } from "@/components/engine-runner";
+
 import { SimilarProjects } from "@/components/similar-projects";
 import { SourceCoverage } from "@/components/source-coverage";
 import { RiskTable } from "@/components/risk-table";
