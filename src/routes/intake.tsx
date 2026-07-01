@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
-import { EngineRunner } from "@/components/engine-runner";
+
 import { SimilarProjects } from "@/components/similar-projects";
 import { SourceCoverage } from "@/components/source-coverage";
 import { RiskTable } from "@/components/risk-table";
@@ -89,15 +89,6 @@ function IntakePage() {
           )}
         </section>
 
-        {/* 4-phase engine */}
-        <EngineRunner
-          running={armed}
-          cycleSeconds={10}
-          onCycleComplete={(c) => {
-            setCyclesRun(c);
-            setRisksFound((r) => r + Math.floor(Math.random() * 3) + 1);
-          }}
-        />
 
         {/* Source coverage + similar projects */}
         <div className="grid grid-cols-12 gap-6">
