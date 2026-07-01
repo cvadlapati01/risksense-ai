@@ -89,15 +89,6 @@ function IntakePage() {
           )}
         </section>
 
-        {/* 4-phase engine */}
-        <EngineRunner
-          running={armed}
-          cycleSeconds={10}
-          onCycleComplete={(c) => {
-            setCyclesRun(c);
-            setRisksFound((r) => r + Math.floor(Math.random() * 3) + 1);
-          }}
-        />
 
         {/* Source coverage + similar projects */}
         <div className="grid grid-cols-12 gap-6">
