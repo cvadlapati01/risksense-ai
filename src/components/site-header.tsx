@@ -48,8 +48,6 @@ export function SiteHeader() {
         <div className="size-8 rounded-full bg-foreground text-background flex items-center justify-center text-[10px] font-bold">
           JS
         </div>
-
-        </div>
       </div>
     </nav>
   );
