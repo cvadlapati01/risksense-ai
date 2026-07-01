@@ -45,12 +45,10 @@ export function SiteHeader() {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <div className="text-right hidden sm:block">
-          <div className="text-[10px] font-mono text-muted-foreground">SYSTEM_TIME</div>
-          <div className="text-xs font-medium uppercase">24 OCT 2024 — 09:42</div>
-        </div>
         <div className="size-8 rounded-full bg-foreground text-background flex items-center justify-center text-[10px] font-bold">
           JS
+        </div>
+
         </div>
       </div>
     </nav>
