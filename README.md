@@ -124,11 +124,6 @@ src/
 
 > **Routing note:** this project uses TanStack Start's file-based routing. Every `.tsx` in `src/routes/` is a route, and `routeTree.gen.ts` is auto-generated — don't edit it by hand. See [`src/routes/README.md`](src/routes/README.md).
 
-## Next steps
-
-- Connect RiskSense to real project data sources for a live pilot.
-- Build the connector library for Windchill, PLATO, and KLUSA APIs.
-- Run a 30-day monitoring pilot on an active project and measure detection rate vs. the current manual process.
 
 ## License
 
