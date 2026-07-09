@@ -1,11 +1,11 @@
 # RiskSense
 
-> **No Risk. Only Fun.**
 > An AI-powered risk intelligence layer for complex engineering and project environments.
 > *Infineon Venture Hack '26 submission.*
 
 RiskSense sits on top of an organisation's existing project-data infrastructure and turns scattered, stale risk information into a single, continuously updated, prioritised action list. It doesn't replace the tools engineers already use — it connects them, scores what they contain, and tells project managers what to do next.
 
+Click for Prototype : https://risksense-ai.lovable.app/
 ---
 
 ## The problem
