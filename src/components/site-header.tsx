@@ -3,10 +3,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 const nav = [
   { to: "/", label: "Dashboard" },
   { to: "/intake", label: "Import & Identify" },
-  
   { to: "/register", label: "Risk Register" },
   { to: "/mitigation", label: "Mitigate Strategy" },
-  { to: "/workstreams", label: "Monitor & Sync" },
   { to: "/admin", label: "Admin & Org" },
 ] as const;
 

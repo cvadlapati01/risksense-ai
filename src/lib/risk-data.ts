@@ -458,11 +458,11 @@ export function actionForRisk(r: Risk): MatrixAction {
  * Each matrix action wires to a specific step in the FMEA workflow.
  * - Critical Priority → Mitigate Strategy (build playbook now)
  * - Manage           → Risk Register (track + assign owner)
- * - Monitor          → Monitor & Sync (watch trends across workstreams)
+ * - Monitor          → Risk Register (watch trends within the register)
  */
 export const ACTION_ROUTES: Record<
   MatrixAction,
-  { route: "/mitigation" | "/register" | "/workstreams"; step: string; verb: string }
+  { route: "/mitigation" | "/register"; step: string; verb: string }
 > = {
   "Critical Priority": {
     route: "/mitigation",
@@ -475,8 +475,8 @@ export const ACTION_ROUTES: Record<
     verb: "Assign owner & track",
   },
   Monitor: {
-    route: "/workstreams",
-    step: "Monitor & Sync",
+    route: "/register",
+    step: "Risk Register",
     verb: "Watch workstream trends",
   },
 };
