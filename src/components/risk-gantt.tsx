@@ -1,7 +1,7 @@
 import { risks, type Workstream } from "@/lib/risk-data";
 
 // Program timeline: Phoenix Core · Q4 2024 → Q3 2025 (12 months)
-const MONTHS = [
+export const MONTHS = [
   "Oct '24", "Nov '24", "Dec '24",
   "Jan '25", "Feb '25", "Mar '25",
   "Apr '25", "May '25", "Jun '25",
@@ -15,7 +15,7 @@ type Phase = {
   end: number;   // month index (inclusive)
 };
 
-const PHASES: Phase[] = [
+export const PHASES: Phase[] = [
   { workstream: "Planning",       label: "Permit & Design Freeze",      start: 0,  end: 2 },
   { workstream: "Procurement",    label: "Long-Lead Procurement",       start: 1,  end: 5 },
   { workstream: "Infrastructure", label: "Site Prep & Foundations",     start: 2,  end: 5 },
@@ -26,7 +26,7 @@ const PHASES: Phase[] = [
   { workstream: "Finance",        label: "Budget Gate Reviews",         start: 2,  end: 11 },
 ];
 
-const MILESTONES: { month: number; label: string; critical?: boolean }[] = [
+export const MILESTONES: { month: number; label: string; critical?: boolean }[] = [
   { month: 2,  label: "M1 · Design Freeze",      critical: true },
   { month: 5,  label: "M2 · Groundbreaking" },
   { month: 8,  label: "M3 · Topping Out" },
@@ -35,7 +35,7 @@ const MILESTONES: { month: number; label: string; critical?: boolean }[] = [
 ];
 
 // Distribute risks across phase months deterministically by id hash
-function monthForRisk(id: string, phase: Phase): number {
+export function monthForRisk(id: string, phase: Phase): number {
   const span = phase.end - phase.start;
   const seed = id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
   return phase.start + (seed % (span + 1));
