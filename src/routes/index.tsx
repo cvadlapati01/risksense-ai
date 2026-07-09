@@ -15,8 +15,8 @@ export const Route = createFileRoute("/")({
         content:
           "Program-wide risk exposure dashboard: critical escalations, 5×5 heatmap, and live risk register for complex multi-workstream projects.",
       },
-      { property: "og:title", content: "RiskSense Dashboard" },
-      { property: "og:description", content: "Program-wide risk exposure at a glance." },
+      { property: "og:title", content: "Dashboard — RiskSense" },
+      { property: "og:description", content: "Program-wide risk exposure dashboard: critical escalations, 5×5 heatmap, and live risk register for complex multi-workstream projects." },
     ],
   }),
   component: Dashboard,
