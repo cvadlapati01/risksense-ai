@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as MonitorRouteImport } from './routes/monitor'
 import { Route as MitigationRouteImport } from './routes/mitigation'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as EngineRouteImport } from './routes/engine'
@@ -19,6 +20,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonitorRoute = MonitorRouteImport.update({
+  id: '/monitor',
+  path: '/monitor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MitigationRoute = MitigationRouteImport.update({
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
+  '/monitor': typeof MonitorRoute
   '/register': typeof RegisterRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
+  '/monitor': typeof MonitorRoute
   '/register': typeof RegisterRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/engine': typeof EngineRoute
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
+  '/monitor': typeof MonitorRoute
   '/register': typeof RegisterRoute
 }
 export interface FileRouteTypes {
@@ -80,9 +89,17 @@ export interface FileRouteTypes {
     | '/engine'
     | '/intake'
     | '/mitigation'
+    | '/monitor'
     | '/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/engine' | '/intake' | '/mitigation' | '/register'
+  to:
+    | '/'
+    | '/admin'
+    | '/engine'
+    | '/intake'
+    | '/mitigation'
+    | '/monitor'
+    | '/register'
   id:
     | '__root__'
     | '/'
@@ -90,6 +107,7 @@ export interface FileRouteTypes {
     | '/engine'
     | '/intake'
     | '/mitigation'
+    | '/monitor'
     | '/register'
   fileRoutesById: FileRoutesById
 }
@@ -99,6 +117,7 @@ export interface RootRouteChildren {
   EngineRoute: typeof EngineRoute
   IntakeRoute: typeof IntakeRoute
   MitigationRoute: typeof MitigationRoute
+  MonitorRoute: typeof MonitorRoute
   RegisterRoute: typeof RegisterRoute
 }
 
@@ -109,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/monitor': {
+      id: '/monitor'
+      path: '/monitor'
+      fullPath: '/monitor'
+      preLoaderRoute: typeof MonitorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mitigation': {
@@ -155,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   EngineRoute: EngineRoute,
   IntakeRoute: IntakeRoute,
   MitigationRoute: MitigationRoute,
+  MonitorRoute: MonitorRoute,
   RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
