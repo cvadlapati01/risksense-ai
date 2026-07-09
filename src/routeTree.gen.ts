@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WorkstreamsRouteImport } from './routes/workstreams'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as MitigationRouteImport } from './routes/mitigation'
 import { Route as IntakeRouteImport } from './routes/intake'
@@ -17,11 +16,6 @@ import { Route as EngineRouteImport } from './routes/engine'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
-const WorkstreamsRoute = WorkstreamsRouteImport.update({
-  id: '/workstreams',
-  path: '/workstreams',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -60,7 +54,6 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
   '/register': typeof RegisterRoute
-  '/workstreams': typeof WorkstreamsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,7 +62,6 @@ export interface FileRoutesByTo {
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
   '/register': typeof RegisterRoute
-  '/workstreams': typeof WorkstreamsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,7 +71,6 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/mitigation': typeof MitigationRoute
   '/register': typeof RegisterRoute
-  '/workstreams': typeof WorkstreamsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,16 +81,8 @@ export interface FileRouteTypes {
     | '/intake'
     | '/mitigation'
     | '/register'
-    | '/workstreams'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/admin'
-    | '/engine'
-    | '/intake'
-    | '/mitigation'
-    | '/register'
-    | '/workstreams'
+  to: '/' | '/admin' | '/engine' | '/intake' | '/mitigation' | '/register'
   id:
     | '__root__'
     | '/'
@@ -108,7 +91,6 @@ export interface FileRouteTypes {
     | '/intake'
     | '/mitigation'
     | '/register'
-    | '/workstreams'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,18 +100,10 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   MitigationRoute: typeof MitigationRoute
   RegisterRoute: typeof RegisterRoute
-  WorkstreamsRoute: typeof WorkstreamsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/workstreams': {
-      id: '/workstreams'
-      path: '/workstreams'
-      fullPath: '/workstreams'
-      preLoaderRoute: typeof WorkstreamsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -182,8 +156,17 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   MitigationRoute: MitigationRoute,
   RegisterRoute: RegisterRoute,
-  WorkstreamsRoute: WorkstreamsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
